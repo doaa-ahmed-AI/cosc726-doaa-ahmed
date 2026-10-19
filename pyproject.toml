@@ -1,0 +1,13 @@
+[project]
+name = "cosc726-doaa-ahmed"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "grandalf>=0.8",
+    "langchain[openai]>=1.4.5",
+    "langgraph>=1.2.15",
+    "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
+]
