@@ -20,7 +20,12 @@ llm = init_chat_model(model=model.small_model)
 class IntentClassifier(BaseModel):
     message_intent: Literal["Chat", "Explain", "Summarize", "Quiz"]
 
-
+MessageIntent = Literal[
+    "Chat",
+    "Explain",
+    "Summarize",
+    "Quiz",
+]
 class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     message_intent: str | None
