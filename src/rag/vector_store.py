@@ -1,3 +1,4 @@
+import hashlib
 import chromadb
 import pymupdf
 
@@ -25,7 +26,8 @@ def chunk_text(text: str, size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) 
 
 def add_pdf(pdf_bytes: bytes, source_name: str) -> int:
     """split each page on the pdf into chunks and return the number of chunks """
-
+    
+    file_id = hashlib.md5(pdf_bytes).hexdigest()
     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
     ids = []

@@ -14,11 +14,11 @@ if "thread_id" not in st.session_state:
     st.session_state.chat = []
 
 
-def show_details(route, sources,missing=""):
+def show_details(route, sources, missing=""):
     if route:
         st.caption(f"Route: {route}")
     if missing:
-        st.caption(f"Not found in the material: {missing}")
+        st.caption(f"Not found in the searched pages: {missing}")
     if sources:
         with st.expander("Sources"):
             for s in sources:
@@ -43,15 +43,17 @@ with st.sidebar:
         st.rerun()
 
 
-if not st.session_state.chat:
+
+question = st.chat_input("Ask a question about your course material")
+
+if not st.session_state.chat and not question:
     st.info("Upload a lecture PDF in the sidebar, then ask a question about it.")
 
 for msg in st.session_state.chat:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
-        show_details(msg.get("route"), msg.get("sources"), msg.get("missing", ""))
-
-question = st.chat_input("Ask a question about your course material")
+        show_details(msg.get("route"), msg.get(
+            "sources"), msg.get("missing", ""))
 
 
 if question:
@@ -69,12 +71,13 @@ if question:
         answer = result['messages'][-1].content
         route = result["message_intent"]
         sources = []
-        missing =""
+        missing = ""
 
         if route != "Chat":
             sources = [
                 f"{d['source']}, page {d['page']} (distance {d['distance']:.2f})" for d in result["retrieved_docs"]]
             missing = result.get("missing", "")
+            route = f"{route} · searches: {result.get('retry_count', 0) + 1} · query: {result.get('search_query', '')}"
         st.markdown(answer)
         show_details(route, sources, missing)
 
