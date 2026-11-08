@@ -1,3 +1,4 @@
+import re
 import uuid
 from typing import Literal, TypedDict, Annotated
 from dotenv import load_dotenv
@@ -22,9 +23,10 @@ MessageIntent = Literal["Chat", "Explain", "Summarize", "Quiz"]
 
 NOT_COVERED = "This is not covered in your course material."
 MAX_RETRIES = 2
+MAX_FIXES = 1
 
 
-# structerd output schema for intent classification
+# structerd output schemas
 class IntentClassifier(BaseModel):
     message_intent: MessageIntent
 
@@ -40,6 +42,23 @@ class MaterialAnswer(BaseModel):
         description="The part of the question the material did not cover. Empty string of nothing is missing.")
 
 
+class QuizQuestion(BaseModel):
+    question: str
+    options: list[str] = Field(
+        description="Exactly 4 answer options, without letters.")
+    correct_option: Literal["A", "B", "C", "D"]
+    explanation: str = Field(
+        description="Why the correct option is right, based on the material.")
+    page: int = Field(
+        description="The page number (from the material headers) the question is based on.")
+
+
+class Quiz(BaseModel):
+    questions: list[QuizQuestion]
+    missing: str = Field(
+        description="What the material did not cover. Empty string if nothing is missing.")
+
+
 class StudyState(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     message_intent: MessageIntent | None
@@ -48,6 +67,47 @@ class StudyState(TypedDict):
     missing: str
     search_query: str
     retry_count: int
+    quiz: dict | None
+    problems: list[str]
+    failed_checks: int
+
+
+PAGE_PATTERN = re.compile(
+    r"\bpages?\s+(\d+)(?:\s*[-–—]\s*(\d+))?", re.IGNORECASE)
+
+
+def find_cited_pages(text: str) -> set[int]:
+    pages = set()
+    for start, end in PAGE_PATTERN.findall(text):
+        pages.add(int(start))
+        if end:
+            pages.add(int(end))
+    return pages
+
+
+def find_problems(answer: str, docs: list[dict], quiz: dict | None) -> list[str]:
+    if answer.strip() == NOT_COVERED:
+        return []  # an honest "not covered" needs no citations
+
+    problems = []
+    found_pages = {d["page"] for d in docs}
+    cited_pages = find_cited_pages(answer)
+
+    if not cited_pages:
+        problems.append(
+            "The answer has no citations. Cite a page after every point.")
+    for page in sorted(cited_pages - found_pages):
+        problems.append(
+            f"The answer cites page {page}, but that page is not in the course material you were given.")
+    if quiz is not None:
+        for i, q in enumerate(quiz["questions"], start=1):
+            if len(q["options"]) != 4:
+                problems.append(
+                    f"Question {i} has {len(q['options'])} options; it must have exactly 4.")
+            if not q["explanation"].strip():
+                problems.append(f"Question {i} has no explanation.")
+
+    return problems
 
 
 def classify_intent(state: StudyState):
@@ -82,7 +142,10 @@ def classify_intent(state: StudyState):
             "retrieved_docs": [],
             "draft_answer": "",
             "missing": "",
-            "retry_count": 0
+            "retry_count": 0,
+            "quiz": None,
+            "problems": [],
+            "failed_checks": 0
             }
 
 
@@ -103,6 +166,13 @@ def format_docs(docs: list[dict]) -> str:
 
     return "\n\n".join(
         f"[{d['source']},page {d['page']}]\n{d['text']}" for d in docs)
+
+
+def feedback_text(state: StudyState) -> str:
+    if not state.get("problems"):
+        return ""
+    lines = "\n".join(f"- {p}" for p in state["problems"])
+    return f"\n\nYour previous answer had these problems. Fix them:\n{lines}"
 
 
 def answer_from_material(state: StudyState, task: str):
@@ -134,6 +204,64 @@ and write the topic of the question in "missing"."""
     result = structured_llm.invoke(messages)
 
     return {"draft_answer": result.answer, "missing": result.missing.strip()}
+
+
+def format_quiz(quiz: Quiz) -> str:
+    if not quiz.questions:
+        return NOT_COVERED
+
+    lines = []
+    for i, q in enumerate(quiz.questions, start=1):
+        lines.append(f"**{i}. {q.question}**\n")
+        for letter, option in zip("ABCD", q.options):
+            lines.append(f"- {letter}) {option}")
+        lines.append("")
+    lines.append("**Answers**\n")
+    for i, q in enumerate(quiz.questions, start=1):
+        lines.append(
+            f"{i}. **{q.correct_option}**: {q.explanation} (page {q.page})")
+    return "\n".join(lines)
+
+
+def make_quiz(state: StudyState):
+    context = format_docs(state["retrieved_docs"])
+    question = state["messages"][-1].content
+    history = state["messages"][:-1]
+
+    prompt = f"""Course material:
+{context}
+ 
+Request: {question}
+ 
+Rules:
+- Write multiple-choice questions using ONLY the course material.
+- Each question has exactly 4 options and exactly one correct option (A, B, C or D).
+- "page" is the page number (from the material headers) that the question is based on.
+- "explanation" says why the correct option is right, using the material.
+- If the request does not say how many questions, write 3.
+- If the material covers only part of the request, write questions about that part and put the rest in "missing".
+- If the material is about a completely different topic, return no questions and write the topic in "missing".{feedback_text(state)}"""
+
+    messages = ([{"role": "system",
+                  "content": "You are a helpful assistant that creates quizzes from course material."}]
+                + history
+                + [{"role": "user", "content": prompt}])
+
+    structured_llm = llm.with_structured_output(Quiz)
+    quiz = structured_llm.invoke(messages)
+
+    return {
+        "draft_answer": format_quiz(quiz),
+        "missing": quiz.missing.strip(),
+        "quiz": quiz.model_dump(),
+    }
+
+
+def validate(state: StudyState):
+    problems = find_problems(
+        state["draft_answer"], state["retrieved_docs"], state.get("quiz"))
+    failed_checks = state["failed_checks"] + (1 if problems else 0)
+    return {"problems": problems, "failed_checks": failed_checks}
 
 
 def rewrite_query(state: StudyState):
@@ -183,15 +311,27 @@ def prompt_llm_quiz(state: StudyState):
 
 # routing
 
+AGENT_FOR_INTENT = {
+    "Explain": "explanation agent",
+    "Summarize": "summary agent",
+    "Quiz": "quiz agent",
+}
+
+
 def route_after_classifier(state: StudyState) -> str:
     if state['message_intent'] == "Chat":
         return 'chat agent'
     return "retrieve"
 
 
-def route_after_answer(state: StudyState) -> str:
+def route_after_validate(state: StudyState) -> str:
+    # 1. the answer broke a rule -> send it back to the same agent, with the problems
+    if state["problems"] and state["failed_checks"] <= MAX_FIXES:
+        return AGENT_FOR_INTENT[state["message_intent"]]
+    # 2. something is missing -> search again
     if state["missing"] and state["retry_count"] < MAX_RETRIES:
         return "rewrite query"
+    # 3. done
     return "finalize"
 
 
@@ -202,8 +342,9 @@ graph_builder.add_node('retrieve', retrieve)
 graph_builder.add_node('chat agent', prompt_llm_chat)
 graph_builder.add_node('explanation agent', prompt_llm_explanation)
 graph_builder.add_node('summary agent', prompt_llm_summary)
-graph_builder.add_node('quiz agent', prompt_llm_quiz)
+graph_builder.add_node('quiz agent', make_quiz)
 graph_builder.add_node('rewrite query', rewrite_query)
+graph_builder.add_node('validate', validate)
 graph_builder.add_node('finalize', finalize)
 
 
@@ -219,8 +360,11 @@ graph_builder.add_conditional_edges(
 
 
 for node in ["explanation agent", "summary agent", "quiz agent"]:
-    graph_builder.add_conditional_edges(
-        node, route_after_answer, ['rewrite query', 'finalize'])
+    graph_builder.add_edge(node, 'validate')
+
+
+graph_builder.add_conditional_edges(
+    'validate', route_after_validate, ['explanation agent', 'summary agent', 'quiz agent', 'rewrite query', 'finalize'])
 
 graph_builder.add_edge('rewrite query', 'retrieve')
 graph_builder.add_edge('finalize', END)
@@ -247,3 +391,5 @@ if __name__ == "__main__":
             print("missing:", result["missing"] or "(nothing)")
             print(
                 f"retries: {result['retry_count']} | last search query: {result['search_query']}")
+            print(
+                f"failed checks: {result['failed_checks']} | problems: {result['problems'] or '(none)'}")

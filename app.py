@@ -43,7 +43,6 @@ with st.sidebar:
         st.rerun()
 
 
-
 question = st.chat_input("Ask a question about your course material")
 
 if not st.session_state.chat and not question:
@@ -77,7 +76,9 @@ if question:
             sources = [
                 f"{d['source']}, page {d['page']} (distance {d['distance']:.2f})" for d in result["retrieved_docs"]]
             missing = result.get("missing", "")
-            route = f"{route} · searches: {result.get('retry_count', 0) + 1} · query: {result.get('search_query', '')}"
+            route = (f"{route} · searches: {result.get('retry_count', 0) + 1}"
+                     f" · failed checks: {result.get('failed_checks', 0)}"
+                     f" · query: {result.get('search_query', '')}")
         st.markdown(answer)
         show_details(route, sources, missing)
 
