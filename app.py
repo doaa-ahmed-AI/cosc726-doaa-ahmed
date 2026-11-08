@@ -14,9 +14,11 @@ if "thread_id" not in st.session_state:
     st.session_state.chat = []
 
 
-def show_details(route, sources):
+def show_details(route, sources,missing=""):
     if route:
         st.caption(f"Route: {route}")
+    if missing:
+        st.caption(f"Not found in the material: {missing}")
     if sources:
         with st.expander("Sources"):
             for s in sources:
@@ -47,7 +49,7 @@ if not st.session_state.chat:
 for msg in st.session_state.chat:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
-        show_details(msg.get("route"), msg.get("sources"))
+        show_details(msg.get("route"), msg.get("sources"), msg.get("missing", ""))
 
 question = st.chat_input("Ask a question about your course material")
 
@@ -67,13 +69,14 @@ if question:
         answer = result['messages'][-1].content
         route = result["message_intent"]
         sources = []
+        missing =""
 
         if route != "Chat":
             sources = [
                 f"{d['source']}, page {d['page']} (distance {d['distance']:.2f})" for d in result["retrieved_docs"]]
-            st.markdown(answer)
-
-            show_details(route, sources)
+            missing = result.get("missing", "")
+        st.markdown(answer)
+        show_details(route, sources, missing)
 
     st.session_state.chat.append(
-        {"role": "assistant", "content": answer, "route": route, "sources": sources})
+        {"role": "assistant", "content": answer, "route": route, "sources": sources, "missing": missing})

@@ -7,7 +7,7 @@ from langchain.chat_models import init_chat_model
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import AnyMessage, add_messages
 from langgraph.checkpoint.memory import InMemorySaver
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from src.rag.vector_store import search
 from src.models.model import model
 
@@ -26,10 +26,19 @@ class IntentClassifier(BaseModel):
     message_intent: MessageIntent
 
 
+class MaterialAnswer(BaseModel):
+    answer: str = Field(
+        description="The answer for the student , with citations.")
+    missing: str = Field(
+        description="The part of the question the material did not cover. Empty string of nothing is missing.")
+
+
 class StudyState(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     message_intent: MessageIntent | None
     retrieved_docs: list[dict]
+    draft_answer: str
+    missing: str
 
 
 def classify_intent(state: StudyState):
@@ -79,15 +88,27 @@ def answer_from_material(state: StudyState, task: str):
 Question: {question}
  
 Rules:
-- Use ONLY the course material. Do not add facts from your own knowledge.
+- Answer using the course material. Do not add facts from your own knowledge.
 - After every point, cite its source in the same format as the material headers, e.g. (lecture.pdf, page 12).
-- If the material does not answer the question, reply exactly: {NOT_COVERED}"""
+- It is fine is the material only covers part of the question, Explain the parts it covers,
+then say which parts were not found, and write those parts in the "missing" field.
+explain those 3, and write "the remaining steps of ... " in "missing.
+-If nothing is missing, leave "missing" empty.
+-Only if the material is about a completely diffrent topic, set "answer" to exactly: {NOT_COVERED}
+and write the topic of the question in "missing"."""
 
     messages = ([{"role": "system", "content": task}]
                 + history
                 + [{"role": "user", "content": final_prompt}])
-    response = llm.invoke(messages)
-    return {"messages": [response]}
+
+    structured_llm = llm.with_structured_output(MaterialAnswer)
+    result = structured_llm.invoke(messages)
+
+    return {"draft_answer": result.answer, "missing": result.missing.strip()}
+
+
+def finalize(state: StudyState):
+    return {"messages": [{"role": "assistant", "content": state["draft_answer"]}]}
 
 
 def prompt_llm_chat(state: StudyState):
@@ -130,6 +151,7 @@ graph_builder.add_node('chat agent', prompt_llm_chat)
 graph_builder.add_node('explanation agent', prompt_llm_explanation)
 graph_builder.add_node('summary agent', prompt_llm_summary)
 graph_builder.add_node('quiz agent', prompt_llm_quiz)
+graph_builder.add_node('finalize', finalize)
 
 
 graph_builder.add_edge(START, 'classifier')
@@ -144,7 +166,10 @@ graph_builder.add_conditional_edges(
 
 
 for node in ["chat agent", "explanation agent", "summary agent", "quiz agent"]:
-    graph_builder.add_edge(node, END)
+    graph_builder.add_edge(node, 'finalize')
+
+graph_builder.add_edge('finalize', END)
+graph_builder.add_edge('chat agent', END)
 
 
 checkpointer = InMemorySaver()
@@ -165,3 +190,5 @@ if __name__ == "__main__":
             pages = [
                 f"{d['source']} p.{d['page']} ({d['distance']:.2f})" for d in result["retrieved_docs"]]
             print("sources used:", ",".join(pages))
+
+            print("missing:", result["missing"] or "(nothing)")
