@@ -58,4 +58,6 @@ def classify_intent(state: StudyState):
         "plan": None,         
         "approval": None,     
         "action_result": "", 
+        "review_issues": [], 
+        "review_count": 0,
     }

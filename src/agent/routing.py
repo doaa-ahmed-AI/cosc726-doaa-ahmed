@@ -6,7 +6,7 @@ AGENT_FOR_INTENT = {
     "Explain": "explanation agent",
     "Summarize": "summary agent",
     "Quiz": "quiz agent",
-    "Plan": "plan agent",
+    "Plan": "plan agent",  # PHASE 3 - STEP 2
 }
 
 
@@ -23,17 +23,29 @@ def route_after_retrieve(state: StudyState) -> str:
 
 
 def route_after_validate(state: StudyState) -> str:
-   
+    
     if state["problems"] and state["failed_checks"] <= config.MAX_FIXES:
         return AGENT_FOR_INTENT[state["message_intent"]]
     
     if state["missing"] and state["retry_count"] < config.MAX_RETRIES:
         return "rewrite query"
-
+   
     if state["message_intent"] == "Plan" and state.get("plan") and state["plan"]["sessions"]:
         return "ask approval"
    
+    if state["draft_answer"].strip() != config.NOT_COVERED:
+        return "critic"
+    
     return "finalize"
+
+
+
+def route_after_critic(state: StudyState) -> str:
+    """The critic rejected the answer -> back to the same agent (limited times). Otherwise finish."""
+    if state["review_issues"] and state["review_count"] <= config.MAX_REVIEWS:
+        return AGENT_FOR_INTENT[state["message_intent"]]
+    return "finalize"
+
 
 
 def route_after_approval(state: StudyState) -> str:
@@ -41,4 +53,3 @@ def route_after_approval(state: StudyState) -> str:
     if state["approval"] in ("approve", "edit"):
         return "share plan"
     return "finalize"
-

@@ -60,6 +60,7 @@ def answer_entry(result) -> dict:
         entry["missing"] = result.get("missing", "")
         entry["route"] = (f"{route} · searches: {result.get('retry_count', 0) + 1}"
                           f" · failed checks: {result.get('failed_checks', 0)}"
+                          f" · critic rejections: {result.get('review_count', 0)}" 
                           f" · query: {result.get('search_query', '')}")
     return entry
 

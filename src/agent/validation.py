@@ -44,10 +44,12 @@ def find_problems(answer: str, docs: list[dict], quiz: dict | None) -> list[str]
 
 
 def feedback_text(state: StudyState) -> str:
-   
-    if not state.get("problems"):
+    """If the last answer failed the checks (or the critic rejected it), tell the LLM what to fix."""
+    issues = list(state.get("problems") or [])
+    issues += [f"Reviewer: {i}" for i in (state.get("review_issues") or [])]  # PHASE 3 - STEP 3
+    if not issues:
         return ""
-    lines = "\n".join(f"- {p}" for p in state["problems"])
+    lines = "\n".join(f"- {p}" for p in issues)
     return f"\n\nYour previous answer had these problems. Fix them:\n{lines}"
 
 

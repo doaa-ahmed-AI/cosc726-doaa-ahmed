@@ -33,3 +33,5 @@ if __name__ == "__main__":
                 f"retries: {result['retry_count']} | last search query: {result['search_query']}")
             print(
                 f"failed checks: {result['failed_checks']} | problems: {result['problems'] or '(none)'}")
+                      
+            print(f"critic rejections: {result['review_count']} | issues: {result['review_issues'] or '(none)'}")

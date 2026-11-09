@@ -19,3 +19,5 @@ class StudyState(TypedDict):
     plan: dict | None           
     approval: str | None      
     action_result: str
+    review_issues: list[str]   
+    review_count: int

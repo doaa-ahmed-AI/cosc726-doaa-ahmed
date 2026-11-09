@@ -15,11 +15,13 @@ from src.agent.classifier import classify_intent
 from src.agent.finalize import finalize
 from src.agent.plan import make_plan
 from src.agent.quiz import make_quiz
+from src.agent.critic import critic 
 from src.agent.retrieval import retrieve
 from src.agent.retry import rewrite_query
-from src.agent.routing import (route_after_approval, route_after_classifier, route_after_retrieve, route_after_validate)
+from src.agent.routing import (route_after_approval,route_after_critic, route_after_classifier, route_after_retrieve, route_after_validate)
 from src.agent.state import StudyState
 from src.agent.validation import validate
+
 
 
 
@@ -37,6 +39,7 @@ def build_graph(checkpointer):
     builder.add_node("ask approval", ask_approval)
     builder.add_node("share plan", share_study_plan) 
     builder.add_node("validate", validate)
+    builder.add_node("critic", critic)  
     builder.add_node("rewrite query", rewrite_query)
     builder.add_node("finalize", finalize)
 
@@ -52,7 +55,10 @@ def build_graph(checkpointer):
 
     builder.add_conditional_edges("validate", route_after_validate,
                                   ["explanation agent", "summary agent", "quiz agent","plan agent",
-                                   "rewrite query", "ask approval", "finalize"])
+                                   "rewrite query", "ask approval", "critic", "finalize"])
+    
+    builder.add_conditional_edges("critic", route_after_critic,
+                                  ["explanation agent", "summary agent", "quiz agent", "finalize"])
 
     
     builder.add_conditional_edges("ask approval", route_after_approval, ["share plan", "finalize"])
