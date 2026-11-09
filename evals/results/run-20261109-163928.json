@@ -1,0 +1,1165 @@
+{
+  "comparison": {
+    "plain LLM": {
+      "in-scope questions answered": "8/8 (100%)",
+      "answers with valid citations": "0/8 (0%)",
+      "answers citing a correct page": "0/8 (0%)",
+      "keyword recall (completeness)": "44%",
+      "out-of-scope honestly declined": "0/3 (0%)",
+      "avg seconds per question": 3.7,
+      "avg LLM calls per question": 1,
+      "avg tokens per question": 316.0,
+      "total cost": "set prices in run_eval.py"
+    },
+    "search once": {
+      "in-scope questions answered": "8/8 (100%)",
+      "answers with valid citations": "8/8 (100%)",
+      "answers citing a correct page": "5/8 (62%)",
+      "keyword recall (completeness)": "66%",
+      "out-of-scope honestly declined": "2/3 (67%)",
+      "avg seconds per question": 3.3,
+      "avg LLM calls per question": 1,
+      "avg tokens per question": 1494.0,
+      "total cost": "set prices in run_eval.py"
+    },
+    "full agent": {
+      "in-scope questions answered": "8/8 (100%)",
+      "answers with valid citations": "8/8 (100%)",
+      "answers citing a correct page": "7/8 (88%)",
+      "keyword recall (completeness)": "87%",
+      "out-of-scope honestly declined": "2/3 (67%)",
+      "avg seconds per question": 20.8,
+      "avg LLM calls per question": 5.6,
+      "avg tokens per question": 8129.0,
+      "total cost": "set prices in run_eval.py"
+    }
+  },
+  "agent_only": {
+    "routing accuracy (all tasks)": "16/16 (100%)",
+    "quiz in a valid format": "1/1 (100%)",
+    "plan paused for human approval": "1/1 (100%)",
+    "chat/off-topic kept out of the book": "3/3 (100%)",
+    "avg retries (extra searches)": 0.9,
+    "answers rejected by the critic": 2,
+    "answers that failed the checks": 1,
+    "avg seconds per task (all tasks)": 17.3,
+    "total cost (all tasks)": "set prices in run_eval.py"
+  },
+  "problems": [
+    "efficiency: did not cite any of the expected pages [42]",
+    "capital_of_japan: answered a question the book does not cover"
+  ],
+  "rows": [
+    {
+      "task": {
+        "id": "definition",
+        "type": "in_scope",
+        "question": "what is an algorithm",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          31
+        ],
+        "keywords": [
+          "unambiguous",
+          "instructions",
+          "finite"
+        ],
+        "note": "Definition on page 31."
+      },
+      "results": {
+        "full agent": {
+          "answer": "An algorithm is a sequence of unambiguous instructions for solving a problem: it produces the required output for any legitimate input in a finite amount of time. (Design  Analysis of Algorithm.pdf, page 31)\n\nAn algorithm is a procedural solution—it gives specific instructions for obtaining an answer, rather than being the answer itself. (Design  Analysis of Algorithm.pdf, page 37)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 10.82,
+          "llm_calls": 3,
+          "input_tokens": 2338,
+          "output_tokens": 275,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "route_ok": true,
+          "pages_found": [
+            29,
+            30,
+            31,
+            37,
+            427
+          ]
+        },
+        "plain LLM": {
+          "answer": "An **algorithm** is a finite, well-defined sequence of steps for solving a problem or completing a task.\n\nFor example, an algorithm for finding the largest number in a list might be:\n\n1. Treat the first number as the largest so far.\n2. Compare it with each remaining number.\n3. If a number is larger, update the largest-so-far value.\n4. Return that value.\n\nAn algorithm takes **input**, follows precise steps, and produces an **output**. A good algorithm also finishes in a reasonable amount of time.",
+          "route": null,
+          "seconds": 2.55,
+          "llm_calls": 1,
+          "input_tokens": 28,
+          "output_tokens": 138,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.3333333333333333,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "An algorithm is a sequence of unambiguous instructions for solving a problem: it produces the required output for any legitimate input in a finite amount of time. (Design  Analysis of Algorithm.pdf, page 31)",
+          "route": null,
+          "seconds": 2.25,
+          "llm_calls": 1,
+          "input_tokens": 1298,
+          "output_tokens": 117,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "pages_found": [
+            21,
+            29,
+            30,
+            31,
+            40,
+            427
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "design_steps",
+        "type": "in_scope",
+        "question": "explain the steps of designing algorithms",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          9,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43
+        ],
+        "keywords": [
+          "understand",
+          "capabilit",
+          "approximat",
+          "technique",
+          "data structure",
+          "specif",
+          "correct",
+          "analy",
+          "cod"
+        ],
+        "note": "Section 1.2 (pages 37-43) has 9 steps; page 9 is the table of contents that lists them."
+      },
+      "results": {
+        "full agent": {
+          "answer": "The material describes these steps and considerations:\n\n1. **Understand the problem.** Read its description carefully, resolve doubts by asking questions, work through small examples, and consider special cases before designing a solution. (Design  Analysis of Algorithm.pdf, page 37)\n\n2. **Choose an approach and design the procedure.** Check whether a known algorithm can solve the problem; if not, design one. Algorithm-design techniques offer general approaches, but not every technique applies to every problem. (Design  Analysis of Algorithm.pdf, page 37; Design  Analysis of Algorithm.pdf, page 40)\n\n3. **Specify the algorithm clearly.** An algorithm is a precisely defined procedure for obtaining an answer, rather than the answer itself. The material describes pseudocode as one way to express an algorithm and distinguishes this specification from its later implementation as a program. (Design  Analysis of Algorithm.pdf, page 37; Design  Analysis of Algorithm.pdf, page 41)\n\n4. **Prove correctness.** After specifying the algorithm, prove that it produces the required result for every legitimate input in a finite amount of time. (Design  Analysis of Algorithm.pdf, page 41)\n\n5. **Analyze efficiency.** The material identifies analyzing an algorithm’s efficiency as part of algorithmic problem solving. It also describes setting up a sum for running time and simplifying it as a systematic analysis method. (Design  Analysis of Algorithm.pdf, page 30; Design  Analysis of Algorithm.pdf, page 70)\n\n6. **Code the algorithm.** Implement the algorithm as a computer program, taking care that the transition from the algorithm to code is neither incorrect nor inefficient. (Design  Analysis of Algorithm.pdf, page 43)\n\nThe material also introduces the relationship between algorithm design and data structures, but the excerpt does not give a specific procedure for choosing data structures. (Design  Analysis of Algorithm.pdf, page 40)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 32.77,
+          "llm_calls": 7,
+          "input_tokens": 10157,
+          "output_tokens": 2741,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 0.7777777777777778,
+          "route_ok": true,
+          "pages_found": [
+            22,
+            23,
+            29,
+            30,
+            37,
+            39,
+            40,
+            41,
+            43,
+            66,
+            70,
+            340,
+            419,
+            427,
+            524
+          ]
+        },
+        "plain LLM": {
+          "answer": "Designing an algorithm is a process of turning a problem into a precise, efficient set of steps. A useful workflow is:\n\n1. **Understand the problem**  \n   Identify exactly what must be solved. Clarify ambiguous terms and any assumptions.\n\n2. **Specify inputs and outputs**  \n   State what information the algorithm receives and what result it must produce. Include the expected format and behavior for unusual cases.\n\n3. **Identify constraints**  \n   Note limits such as input size, time, memory, and required accuracy. Constraints often determine which approaches are practical.\n\n4. **Choose a strategy and suitable data structures**  \n   Consider possible techniques—for example, searching, sorting, recursion, dynamic programming, or graph traversal—and choose data structures that support them.\n\n5. **Develop the steps**  \n   Write the method in plain language, pseudocode, or a flowchart. Keep the steps precise enough that someone else could follow them.\n\n6. **Check correctness**  \n   Explain why the method always produces the required result. A proof often uses induction, invariants, or a careful case analysis. Also consider edge cases.\n\n7. **Analyze efficiency**  \n   Estimate how the running time and memory use grow as the input size grows, usually with Big-O notation.\n\n8. **Implement the algorithm**  \n   Translate the design into a programming language. Keep the implementation faithful to the algorithm, while handling language-specific details.\n\n9. **Test and refine**  \n   Try typical inputs, edge cases, and large inputs. If the algorithm is incorrect or too slow, revisit the design—not just the code.\n\n**Example: finding the largest number in a list**\n\n- Input: a non-empty list of numbers  \n- Output: the largest number  \n- Strategy: keep track of the largest value seen so far  \n- Steps: set `largest` to the first number; scan the remaining numbers; update `largest` whenever a bigger number appears; return it  \n- Correctness idea: after each scan, `largest` is the biggest value among all numbers examined so far  \n- Efficiency: \\(O(n)\\) time and \\(O(1)\\) extra space for a list of \\(n\\) numbers\n\nThe key idea is to separate **designing and reasoning about the method** from **writing the code**.",
+          "route": null,
+          "seconds": 6.24,
+          "llm_calls": 1,
+          "input_tokens": 31,
+          "output_tokens": 535,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.7777777777777778,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "1. **Understand the problem.** Read its description carefully, ask questions about anything unclear, work through small examples by hand, and consider special cases. (Design Analysis of Algorithm.pdf, page 37)\n\n2. **Check whether a suitable algorithm is already known.** If the problem is a common type, an existing algorithm may solve it. Understand how it works and its strengths and weaknesses, especially if choosing among several algorithms. (Design Analysis of Algorithm.pdf, page 37)\n\n3. **Design an algorithm when no suitable one is available.** The material says that you may need to design your own algorithm if a readily available one cannot be found. It presents algorithm design techniques—general approaches applicable to problems in different areas of computing—as guidance for solving new problems. (Design Analysis of Algorithm.pdf, page 37; Design Analysis of Algorithm.pdf, page 39)\n\nThe excerpts also identify designing an algorithm and data structures as part of the discussion, but do not provide the full sequence of design steps or explain that part in detail. (Design Analysis of Algorithm.pdf, page 40)",
+          "route": null,
+          "seconds": 5.94,
+          "llm_calls": 1,
+          "input_tokens": 1407,
+          "output_tokens": 518,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 0.4444444444444444,
+          "pages_found": [
+            29,
+            37,
+            39,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "design_steps_typos",
+        "type": "in_scope",
+        "question": "summrize the dessigning algorithm procees",
+        "expected_route": [
+          "Summarize"
+        ],
+        "gold_pages": [
+          9,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43
+        ],
+        "keywords": [
+          "understand",
+          "capabilit",
+          "approximat",
+          "technique",
+          "data structure",
+          "specif",
+          "correct",
+          "analy",
+          "cod"
+        ],
+        "note": "Same as design_steps, with spelling mistakes."
+      },
+      "results": {
+        "full agent": {
+          "answer": "The material describes the algorithm-design process as a sequence of steps, including these points:\n\n- **Understand the problem:** Before designing an algorithm, understand completely the problem being given. An algorithm is a procedural solution: specific instructions for obtaining an answer, rather than the answer itself. (Design Analysis of Algorithm.pdf, page 37)\n- **Develop an algorithmic approach:** Use an appropriate design technique—a general strategy that can guide solutions to different kinds of problems. Such techniques are useful tools, but no one technique applies to every problem, and there is no universal recipe for designing an algorithm. (Design Analysis of Algorithm.pdf, pages 39–40; Design Analysis of Algorithm.pdf, page 30)\n- **Specify the algorithm:** Describe the procedure in natural language or pseudocode. Pseudocode is generally more precise, while natural language can be ambiguous. A description must be converted into a program for a computer to execute. (Design Analysis of Algorithm.pdf, pages 40–41)\n- **Prove correctness:** Show that the specified algorithm produces the required result for every legitimate input in a finite amount of time. (Design Analysis of Algorithm.pdf, page 41)\n- **Analyze efficiency:** Efficiency analysis is one of the aspects of algorithmic problem solving, though the provided excerpts do not give its detailed procedure. (Design Analysis of Algorithm.pdf, page 30)",
+          "route": "Summarize",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 24.61,
+          "llm_calls": 7,
+          "input_tokens": 9211,
+          "output_tokens": 1891,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 0.6666666666666666,
+          "route_ok": true,
+          "pages_found": [
+            22,
+            29,
+            30,
+            37,
+            39,
+            40,
+            41,
+            66,
+            120,
+            340,
+            427,
+            487
+          ]
+        },
+        "plain LLM": {
+          "answer": "### Algorithm design process\n\n1. **Understand the problem:** Identify what you’re asked to solve and clarify any assumptions.\n2. **Define inputs and outputs:** Specify what information the algorithm receives and what result it must produce.\n3. **Identify constraints:** Consider limits such as input size, time, memory, and special cases.\n4. **Break the problem down:** Find smaller subproblems or useful patterns in the data.\n5. **Choose an approach:** Select a suitable strategy, such as searching, sorting, recursion, or dynamic programming.\n6. **Write the algorithm:** Describe the steps in pseudocode or a flowchart.\n7. **Check correctness:** Make sure the steps work for typical cases and edge cases.\n8. **Analyze efficiency:** Estimate the algorithm’s time and memory requirements.\n9. **Implement and test:** Turn it into code, test it with varied inputs, and improve it if needed.",
+          "route": null,
+          "seconds": 3.26,
+          "llm_calls": 1,
+          "input_tokens": 34,
+          "output_tokens": 247,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.5555555555555556,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "- Treat the solution as a precisely defined procedure for obtaining an answer, rather than just the answer itself. (Design Analysis of Algorithm.pdf, page 29)\n- Use algorithm-design techniques as general problem-solving approaches. The material names strategies such as brute force, decrease-and-conquer, and transform-and-conquer, while noting that a technique may not apply to every problem. (Design Analysis of Algorithm.pdf, pages 22, 40)\n- Express the solution as an algorithm; the material says that doing so can lead to a deeper understanding of the problem. (Design Analysis of Algorithm.pdf, page 30)\n- The material frames algorithm work as constructing, manipulating, understanding, and analyzing algorithms. (Design Analysis of Algorithm.pdf, page 30)",
+          "route": null,
+          "seconds": 5.16,
+          "llm_calls": 1,
+          "input_tokens": 1284,
+          "output_tokens": 435,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": 0.3333333333333333,
+          "pages_found": [
+            21,
+            22,
+            29,
+            30,
+            40,
+            427
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "correctness",
+        "type": "in_scope",
+        "question": "why do we need to prove that an algorithm is correct",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          41
+        ],
+        "keywords": [
+          "prov",
+          "input",
+          "finite"
+        ],
+        "note": "Proving an Algorithm's Correctness, page 41."
+      },
+      "results": {
+        "full agent": {
+          "answer": "We need to prove an algorithm is correct to establish that it produces the required result for every legitimate input and finishes in a finite amount of time. (Design Analysis of Algorithm.pdf, page 41) Tracing an algorithm on a few specific inputs cannot conclusively establish its correctness, although one input on which it fails is enough to show it is incorrect. (Design Analysis of Algorithm.pdf, page 41)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 1,
+          "quiz_valid": false,
+          "seconds": 17.0,
+          "llm_calls": 5,
+          "input_tokens": 5445,
+          "output_tokens": 753,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "route_ok": true,
+          "pages_found": [
+            41,
+            43,
+            44
+          ]
+        },
+        "plain LLM": {
+          "answer": "We prove an algorithm is correct to show that it does what it is supposed to do—not just on a few examples, but for **every input covered by its specification**.\n\nThat matters because:\n\n- **Testing can miss cases.** A program may pass many tests and still fail on an unusual input.\n- **Errors can be costly.** Incorrect algorithms can lead to wrong results, security vulnerabilities, or real-world harm.\n- **Proofs clarify assumptions.** They make explicit what inputs are allowed and what the algorithm guarantees.\n- **Correctness helps with change.** A clear argument makes it easier to modify or reuse an algorithm without accidentally breaking it.\n\nUsually, correctness means showing that, for every valid input, the algorithm terminates and produces an output satisfying the specification. Testing gives evidence; a proof gives a general guarantee under the stated assumptions.",
+          "route": null,
+          "seconds": 3.04,
+          "llm_calls": 1,
+          "input_tokens": 35,
+          "output_tokens": 225,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.6666666666666666,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "We need to prove an algorithm is correct to establish that it produces the required result for every legitimate input and finishes in a finite amount of time. (Design  Analysis of Algorithm.pdf, page 41)\n\nTesting or tracing an algorithm on a few inputs cannot prove correctness conclusively; however, one input on which it fails is enough to show that it is incorrect. (Design  Analysis of Algorithm.pdf, page 41)\n\nFor an approximation algorithm, correctness is usually assessed by showing that its error does not exceed a predefined limit. (Design  Analysis of Algorithm.pdf, page 41)",
+          "route": null,
+          "seconds": 3.35,
+          "llm_calls": 1,
+          "input_tokens": 1567,
+          "output_tokens": 239,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "pages_found": [
+            30,
+            41,
+            43
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "efficiency",
+        "type": "in_scope",
+        "question": "how do we analyze an algorithm",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          42
+        ],
+        "keywords": [
+          "time",
+          "space",
+          "simplicity",
+          "generality"
+        ],
+        "note": "Analyzing an Algorithm, page 42."
+      },
+      "results": {
+        "full agent": {
+          "answer": "1. Choose a parameter (or parameters) that indicate the input’s size. For example, the material analyzes a comparison count as a function of input size n. (Design Analysis of Algorithm.pdf, page 90)\n\n2. For time analysis, identify the algorithm’s basic operation—the operation that contributes most to running time, often one in the innermost loop. Examples include key comparisons in sorting and arithmetic operations in mathematical algorithms. (Design Analysis of Algorithm.pdf, pages 72 and 90)\n\n3. Count how many times that basic operation is executed. For a nonrecursive algorithm, set up a sum for the count and determine its order of growth; the material illustrates this with C(n) = n − 1. (Design Analysis of Algorithm.pdf, pages 90 and 123)\n\n4. For a recursive algorithm, set up a recurrence relation for the number of executions of its basic operation, then solve the recurrence and determine its order of growth. (Design Analysis of Algorithm.pdf, pages 99 and 123)\n\n5. If the running time differs for inputs of the same size, distinguish among worst-case, average-case, and best-case efficiency. The analysis framework primarily focuses on the order of growth of running time as input size goes to infinity. (Design Analysis of Algorithm.pdf, page 122)\n\n6. The material also defines space efficiency as the memory required by an algorithm in addition to the space needed for its input and output. (Design Analysis of Algorithm.pdf, page 70)\n\n⚠️ The reviewer could not confirm every claim against the cited pages: Claim 2: The cited pages 72 and 90 do not state generally that the basic operation is the operation that contributes most to running time. Page 90 says it is usually located in the innermost loop; page 72 gives examples and says division is the most time-consuming of the listed arithmetic operations.; Claim 3: Page 90 supports the example of setting up a sum and finding C(n) = n − 1 ∈ Θ(n). However, page 123 is not included in the supplied course material, so that citation cannot be verified.; Claim 4: Page 99 supports defining a recurrence for the multiplication count and solving it to find an explicit formula. It does not say to determine the order of growth. Page 123 is not included in the supplied material, so that citation cannot be verified.",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 2,
+          "critic_rejections": 2,
+          "quiz_valid": false,
+          "seconds": 77.2,
+          "llm_calls": 10,
+          "input_tokens": 15849,
+          "output_tokens": 6619,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": 0.5,
+          "route_ok": true,
+          "pages_found": [
+            69,
+            70,
+            72,
+            78,
+            90,
+            99,
+            100,
+            104,
+            105,
+            106,
+            113,
+            122,
+            123
+          ]
+        },
+        "plain LLM": {
+          "answer": "To analyze an algorithm, ask two main questions:\n\n1. **Does it produce the correct result?**\n2. **How much time and memory does it use as the input grows?**\n\n### A practical method\n\n1. **Define the input size.**  \n   Usually this is \\(n\\), such as the number of items in a list. For other problems, there may be multiple input sizes—for example, rows and columns in a matrix.\n\n2. **Check correctness.**  \n   Explain why the algorithm works for every valid input. Common tools include:\n   - tracing a few representative cases,\n   - proving a **loop invariant** (a fact that remains true during each loop iteration),\n   - using induction, especially for recursive algorithms.\n\n3. **Count the work.**  \n   Choose a basic operation—such as a comparison or assignment—and estimate how many times it runs. Focus on how that count changes with \\(n\\), rather than on exact seconds.\n\n4. **Express the growth rate.**  \n   Use asymptotic notation:\n   - \\(O(f(n))\\): an upper bound on growth,\n   - \\(\\Omega(f(n))\\): a lower bound,\n   - \\(\\Theta(f(n))\\): a tight bound.\n\n   For example, \\(3n^2 + 5n + 2\\) is \\(\\Theta(n^2)\\), because the \\(n^2\\) term dominates for large \\(n\\).\n\n5. **State which case you mean.**  \n   Runtime may differ for the **best**, **average**, or **worst** input. Big-\\(O\\) is often used to report worst-case growth, but it does not inherently mean “worst case”—say which case you analyzed.\n\n6. **Analyze memory too.**  \n   Count extra space used as the input grows. Note whether the analysis includes the input itself or only additional memory.\n\n### Example: linear search\n\nTo find a value in a list of \\(n\\) items, check items one by one.\n\n- **Best case:** the first item matches, so \\(\\Theta(1)\\) time.\n- **Worst case:** the value is last or absent, so up to \\(n\\) checks: \\(\\Theta(n)\\) time.\n- **Extra space:** \\(\\Theta(1)\\), since only a few variables are needed.\n\nFor recursive algorithms, the same ideas apply, but you often describe the work with a **recurrence**—for example, \\(T(n)=2T(n/2)+n\\)—and then solve it.\n\nA useful summary is: **define the input size, verify correctness, count operations, report time and space growth, and specify the case being analyzed.**",
+          "route": null,
+          "seconds": 6.77,
+          "llm_calls": 1,
+          "input_tokens": 30,
+          "output_tokens": 677,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.5,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "An algorithm can be analyzed empirically by timing the program on several inputs and then analyzing the results. (Design Analysis of Algorithm.pdf, page 44)\n\nThe material gives these empirical-analysis steps:\n1. Generate a sample of inputs. (Design Analysis of Algorithm.pdf, page 113)\n2. Run the algorithm (or algorithms) on the sample inputs and record the observed data. (Design Analysis of Algorithm.pdf, page 113)\n3. Analyze the data obtained. (Design Analysis of Algorithm.pdf, page 113)\n\nAn empirical analysis may be used to check a theoretical claim about efficiency, compare algorithms or implementations, develop a hypothesis about an algorithm’s efficiency class, or determine how a program performs on a particular machine. The goal should guide how efficiency is measured. (Design Analysis of Algorithm.pdf, page 113)",
+          "route": null,
+          "seconds": 4.79,
+          "llm_calls": 1,
+          "input_tokens": 1327,
+          "output_tokens": 426,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": 0.0,
+          "pages_found": [
+            29,
+            37,
+            40,
+            44,
+            113,
+            427
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "problem_types",
+        "type": "in_scope",
+        "question": "what are the most important problem types",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          46
+        ],
+        "keywords": [
+          "sorting",
+          "searching",
+          "string",
+          "graph",
+          "combinatorial",
+          "geometric",
+          "numerical"
+        ],
+        "note": "Section 1.3 lists 7 problem types on page 46."
+      },
+      "results": {
+        "full agent": {
+          "answer": "The most important problem types are:\n- Sorting (Design Analysis of Algorithm.pdf, page 46)\n- Searching (Design Analysis of Algorithm.pdf, page 46)\n- String processing (Design Analysis of Algorithm.pdf, page 46)\n- Graph problems (Design Analysis of Algorithm.pdf, page 46)\n- Combinatorial problems (Design Analysis of Algorithm.pdf, page 46)\n- Geometric problems (Design Analysis of Algorithm.pdf, page 46)\n- Numerical problems (Design Analysis of Algorithm.pdf, page 46)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 6.25,
+          "llm_calls": 3,
+          "input_tokens": 2320,
+          "output_tokens": 319,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "route_ok": true,
+          "pages_found": [
+            21,
+            22,
+            30,
+            46,
+            47,
+            66
+          ]
+        },
+        "plain LLM": {
+          "answer": "Which subject or course do you mean—such as calculus, physics, programming, or statistics? The most important problem types depend on the topic.",
+          "route": null,
+          "seconds": 1.72,
+          "llm_calls": 1,
+          "input_tokens": 31,
+          "output_tokens": 65,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.0,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "The most important problem types are:\n- Sorting (Design Analysis of Algorithm.pdf, page 46)\n- Searching (Design Analysis of Algorithm.pdf, page 46)\n- String processing (Design Analysis of Algorithm.pdf, page 46)\n- Graph problems (Design Analysis of Algorithm.pdf, page 46)\n- Combinatorial problems (Design Analysis of Algorithm.pdf, page 46)\n- Geometric problems (Design Analysis of Algorithm.pdf, page 46)\n- Numerical problems (Design Analysis of Algorithm.pdf, page 46)",
+          "route": null,
+          "seconds": 2.91,
+          "llm_calls": 1,
+          "input_tokens": 1407,
+          "output_tokens": 201,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "pages_found": [
+            22,
+            30,
+            46,
+            47,
+            66,
+            430
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "design_technique",
+        "type": "in_scope",
+        "question": "what is an algorithm design technique",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          39,
+          66
+        ],
+        "keywords": [
+          "general",
+          "approach",
+          "problems"
+        ],
+        "note": "Definition on page 39; chapter summary on page 66."
+      },
+      "results": {
+        "full agent": {
+          "answer": "An algorithm design technique (also called a strategy or paradigm) is a general approach to solving problems algorithmically that can be applied to a variety of problems from different areas of computing. (Design Analysis of Algorithm.pdf, page 39)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 1,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 11.57,
+          "llm_calls": 5,
+          "input_tokens": 4743,
+          "output_tokens": 528,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "route_ok": true,
+          "pages_found": [
+            22,
+            29,
+            30,
+            37,
+            39,
+            40,
+            66,
+            269,
+            427
+          ]
+        },
+        "plain LLM": {
+          "answer": "An **algorithm design technique** is a general strategy for creating algorithms to solve a class of problems. It helps you decide how to break down a problem and organize the steps toward a solution.\n\nCommon techniques include:\n\n- **Brute force:** Try every possible solution.\n- **Divide and conquer:** Split a problem into smaller parts, solve them, then combine the results (as in merge sort).\n- **Greedy:** Make the best-looking choice at each step, aiming to build an overall solution.\n- **Dynamic programming:** Solve overlapping smaller problems once and reuse their answers.\n- **Backtracking:** Explore possible choices and undo a choice when it leads to a dead end.\n\nThe right technique depends on the problem and on requirements such as speed, memory use, and whether the solution must be guaranteed optimal.",
+          "route": null,
+          "seconds": 2.87,
+          "llm_calls": 1,
+          "input_tokens": 30,
+          "output_tokens": 179,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.6666666666666666,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "An algorithm design technique (also called a strategy or paradigm) is a general approach to solving problems algorithmically. It can be applied to a variety of problems from different areas of computing. (Design Analysis of Algorithm.pdf, page 39; Design Analysis of Algorithm.pdf, page 66)",
+          "route": null,
+          "seconds": 2.35,
+          "llm_calls": 1,
+          "input_tokens": 1325,
+          "output_tokens": 127,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "pages_found": [
+            21,
+            22,
+            29,
+            39,
+            40,
+            66
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "follow_up",
+        "type": "in_scope",
+        "question": "explain that more simply",
+        "history": [
+          "what is an algorithm"
+        ],
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          31
+        ],
+        "keywords": [
+          "instructions",
+          "problem"
+        ],
+        "note": "A follow-up: only understandable with the chat history."
+      },
+      "results": {
+        "full agent": {
+          "answer": "An algorithm is a clear set of instructions for solving a problem and getting an answer. (Design  Analysis of Algorithm.pdf, page 31; Design  Analysis of Algorithm.pdf, page 37)\n\nThe instructions must be specific enough to follow, and they must produce the needed result for a valid input in a finite amount of time. (Design  Analysis of Algorithm.pdf, page 31)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 8.7,
+          "llm_calls": 3,
+          "input_tokens": 2832,
+          "output_tokens": 370,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "route_ok": true,
+          "pages_found": [
+            29,
+            30,
+            31,
+            37,
+            427
+          ]
+        },
+        "plain LLM": {
+          "answer": "Sure—what would you like me to explain more simply? Please paste the text or tell me the topic.",
+          "route": null,
+          "seconds": 1.58,
+          "llm_calls": 1,
+          "input_tokens": 29,
+          "output_tokens": 58,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": 0.0,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "Some mathematical problems can only be solved approximately. (Design Analysis of Algorithm.pdf, page 50)\n\nComputers also represent real numbers approximately, so calculations may have small rounding errors. (Design Analysis of Algorithm.pdf, page 50)\n\nWhen many calculations are performed, those small errors can build up. (Design Analysis of Algorithm.pdf, page 50)",
+          "route": null,
+          "seconds": 3.43,
+          "llm_calls": 1,
+          "input_tokens": 529,
+          "output_tokens": 243,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": 0.5,
+          "pages_found": [
+            30,
+            50,
+            86,
+            129,
+            420,
+            481
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "quiz",
+        "type": "quiz",
+        "question": "make 3 quiz questions about what an algorithm is",
+        "expected_route": [
+          "Quiz"
+        ],
+        "gold_pages": [
+          31,
+          37
+        ],
+        "note": "Must be a valid quiz: 4 options per question and passing the checks."
+      },
+      "results": {
+        "full agent": {
+          "answer": "**1. Which statement best defines an algorithm according to the material?**\n\n- A) A sequence of unambiguous instructions that produces the required output for any legitimate input in finite time\n- B) A collection of possible answers to a problem, whether or not they can be carried out\n- C) A proof that a solution to a problem exists\n- D) A set of instructions that works only for one particular input\n\n**2. How does the material characterize algorithms as solutions to problems?**\n\n- A) They are procedural solutions: specific instructions for getting answers, rather than the answers themselves\n- B) They are answers that do not require a procedure\n- C) They are proofs that a problem has at least one solution\n- D) They are informal descriptions of what a computer might do\n\n**3. What does the word “instructions” in the definition of an algorithm imply?**\n\n- A) Something or someone must be capable of understanding and following them\n- B) The instructions must be written in a particular programming language\n- C) The instructions must be followed by an electronic computer\n- D) The instructions must describe every possible problem\n\n**Answers**\n\n1. **A**: The material defines an algorithm as a sequence of unambiguous instructions for obtaining the required output for any legitimate input in a finite amount of time. (page 31)\n2. **A**: The material says algorithms are procedural solutions to problems and emphasizes that they provide specific instructions for getting answers, not the answers themselves. (page 37)\n3. **A**: The material explains that referring to instructions implies there is something or someone capable of understanding and following them; it calls this a “computer.” (page 31)",
+          "route": "Quiz",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": true,
+          "seconds": 10.67,
+          "llm_calls": 3,
+          "input_tokens": 2829,
+          "output_tokens": 794,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": [
+            29,
+            30,
+            31,
+            37,
+            427
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "study_plan",
+        "type": "plan",
+        "question": "make me a 3 day study plan for designing algorithms",
+        "expected_route": [
+          "Plan"
+        ],
+        "note": "Must pause for human approval. The evaluation always rejects, so nothing is shared."
+      },
+      "results": {
+        "full agent": {
+          "answer": "**Your study plan**\n\n- **Day 1: Algorithm design techniques as general approaches to solving problems** (page 39): Read the definition and summarize what makes a design technique applicable across different problem areas.\n- **Day 2: Designing an algorithm and data structures** (page 40): Read the section and note why choosing a design approach for a particular problem can be challenging.\n- **Day 3: Dynamic programming: coin-row problem and knapsack problem** (page 313): Study how the coin-row recurrence is derived, then practice setting up a dynamic programming solution for the knapsack problem using the material on page 320.\n\nNot shared: you rejected it, so the plan stays private.",
+          "route": "Plan",
+          "paused_for_approval": true,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 30.39,
+          "llm_calls": 6,
+          "input_tokens": 7173,
+          "output_tokens": 2014,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": [
+            7,
+            19,
+            21,
+            22,
+            29,
+            39,
+            40,
+            66,
+            313,
+            318,
+            320,
+            499,
+            502
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "photosynthesis",
+        "type": "out_of_scope",
+        "question": "expain photosythiss",
+        "expected_route": [
+          "Explain",
+          "Chat"
+        ],
+        "note": "Not in the book (and misspelled): the honest answer is to decline."
+      },
+      "results": {
+        "full agent": {
+          "answer": "This is not covered in your course material.",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 10.74,
+          "llm_calls": 6,
+          "input_tokens": 8481,
+          "output_tokens": 415,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": [
+            131,
+            217,
+            245,
+            247,
+            249,
+            252,
+            255,
+            256,
+            278,
+            329,
+            380,
+            387,
+            399,
+            423,
+            531
+          ]
+        },
+        "plain LLM": {
+          "answer": "**Photosynthesis** is how plants, algae, and some bacteria use light energy to make sugar.\n\nThe overall reaction is often written as:\n\n\\[\n6\\text{CO}_2 + 6\\text{H}_2\\text{O} + \\text{light energy}\n\\rightarrow \\text{C}_6\\text{H}_{12}\\text{O}_6 + 6\\text{O}_2\n\\]\n\nIn other words, they use **carbon dioxide** from the air and **water** to make **glucose** (a sugar), releasing **oxygen**.\n\nIn plants, photosynthesis happens mainly in the **chloroplasts**:\n\n1. **Light reactions:** Chlorophyll captures sunlight. The energy is used to split water, releasing oxygen and producing energy-carrying molecules.\n2. **Calvin cycle:** The plant uses those molecules to turn carbon dioxide into sugars.\n\nThe sugar provides energy and building material for the plant. The oxygen is released into the air.",
+          "route": null,
+          "seconds": 3.65,
+          "llm_calls": 1,
+          "input_tokens": 30,
+          "output_tokens": 275,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "This is not covered in your course material.",
+          "route": null,
+          "seconds": 1.51,
+          "llm_calls": 1,
+          "input_tokens": 897,
+          "output_tokens": 53,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "pages_found": [
+            131,
+            184,
+            348,
+            464,
+            504,
+            588
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "french_revolution",
+        "type": "out_of_scope",
+        "question": "explain the causes of the french revolution",
+        "expected_route": [
+          "Explain",
+          "Chat"
+        ],
+        "note": "Not in the book: the honest answer is to decline."
+      },
+      "results": {
+        "full agent": {
+          "answer": "This is not covered in your course material.",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 11.02,
+          "llm_calls": 6,
+          "input_tokens": 7975,
+          "output_tokens": 399,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": [
+            26,
+            74,
+            83,
+            84,
+            88,
+            99,
+            272,
+            288,
+            314,
+            358,
+            416,
+            488,
+            510,
+            582
+          ]
+        },
+        "plain LLM": {
+          "answer": "The French Revolution was caused by a combination of **social inequality, financial crisis, political conflict, and economic hardship**. No single factor explains it; these pressures reinforced one another and made the monarchy increasingly difficult to govern.\n\n### 1. An unequal social system\nFrench society was divided into three *estates*:\n\n- **First Estate:** the clergy  \n- **Second Estate:** the nobility  \n- **Third Estate:** everyone else, including peasants, urban workers, and the middle class  \n\nThe first two estates held significant privileges, including exemptions from many taxes and access to important offices. The Third Estate made up the overwhelming majority of the population and carried much of the tax burden. Many people therefore saw the system as unfair—especially as educated and prosperous members of the middle class gained wealth but remained excluded from political power.\n\n### 2. A severe financial crisis\nThe monarchy had accumulated enormous debts, partly from wars and the cost of maintaining the royal court. France’s support for the American Revolution added to the strain, although the deeper problem was a tax system that was inefficient and heavily protected the privileged estates.\n\nAttempts to reform taxation met resistance from nobles and other powerful groups. The monarchy needed more revenue but could not make the privileged pay without challenging the social order on which its authority depended.\n\n### 3. Political weakness and conflict\nKing Louis XVI faced the financial crisis with limited political authority and no widely accepted way to resolve it. In 1789, he called the **Estates-General**—an assembly that had not met since 1614—to approve new measures.\n\nThe central dispute was how votes should be counted. The Third Estate wanted voting by individual representatives, which would give it greater influence; the other estates favored voting by estate, which could preserve their advantage. When the Third Estate declared itself the **National Assembly**, the conflict became a challenge to the monarchy’s political authority.\n\n### 4. Enlightenment ideas\nEnlightenment writers questioned absolute monarchy, inherited privilege, and the idea that political authority came solely from the king. Ideas about popular sovereignty, individual rights, and equality before the law gave people a language for criticizing the existing system.\n\nThese ideas did not cause the Revolution on their own, but they helped people imagine and justify political alternatives.\n\n### 5. Economic hardship\nIn the late 1780s, poor harvests and harsh winters drove up the price of bread, a basic food for ordinary people. At the same time, unemployment and hardship increased. For urban workers and the poor, political disputes were closely tied to immediate concerns about food and survival.\n\n### The immediate crisis\nBy 1789, the government’s financial problems had forced a political confrontation, while economic hardship and resentment of privilege made the population more willing to act. The dispute over the Estates-General’s voting rules, followed by the formation of the National Assembly and popular unrest in Paris and the countryside, turned a crisis of royal finance into a revolution.\n\n**In short:** France’s old social order was deeply unequal, the state was nearly bankrupt, the monarchy struggled to reform, and economic hardship intensified popular anger. The Revolution began when these pressures converged in a political crisis.",
+          "route": null,
+          "seconds": 7.47,
+          "llm_calls": 1,
+          "input_tokens": 32,
+          "output_tokens": 719,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "This is not covered in your course material.",
+          "route": null,
+          "seconds": 1.74,
+          "llm_calls": 1,
+          "input_tokens": 1613,
+          "output_tokens": 52,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "pages_found": [
+            74,
+            80,
+            159,
+            420,
+            488
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "capital_of_japan",
+        "type": "out_of_scope",
+        "question": "what is the capital of japan",
+        "expected_route": [
+          "Explain",
+          "Chat"
+        ],
+        "note": "General knowledge, not in the book: decline or redirect."
+      },
+      "results": {
+        "full agent": {
+          "answer": "The material lists Tokyo among several cities, but does not identify it as Japan’s capital. (Design Analysis of Algorithm.pdf, page 5)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 18.23,
+          "llm_calls": 7,
+          "input_tokens": 4753,
+          "output_tokens": 1008,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": [
+            5,
+            93,
+            101,
+            102,
+            135,
+            244,
+            250,
+            472,
+            474,
+            485,
+            541,
+            591
+          ]
+        },
+        "plain LLM": {
+          "answer": "Tokyo.",
+          "route": null,
+          "seconds": 1.12,
+          "llm_calls": 1,
+          "input_tokens": 30,
+          "output_tokens": 16,
+          "declined": false,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "pages_found": []
+        },
+        "search once": {
+          "answer": "The material lists Tokyo among the cities, but does not identify it as Japan’s capital. (Design Analysis of Algorithm.pdf, page 5)",
+          "route": null,
+          "seconds": 3.18,
+          "llm_calls": 1,
+          "input_tokens": 1127,
+          "output_tokens": 245,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "pages_found": [
+            5,
+            102,
+            135,
+            183,
+            541
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "greeting",
+        "type": "chat",
+        "question": "hi",
+        "expected_route": [
+          "Chat"
+        ]
+      },
+      "results": {
+        "full agent": {
+          "answer": "Hi! What are you studying today?",
+          "route": "Chat",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 2.36,
+          "llm_calls": 2,
+          "input_tokens": 407,
+          "output_tokens": 30,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": []
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "recipe",
+        "type": "chat",
+        "question": "give me a recipe for banana bread",
+        "expected_route": [
+          "Chat"
+        ],
+        "note": "Off-topic: should be politely redirected."
+      },
+      "results": {
+        "full agent": {
+          "answer": "I’m here to help with your course material. Want help studying a topic or working through an assignment?",
+          "route": "Chat",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 2.87,
+          "llm_calls": 2,
+          "input_tokens": 419,
+          "output_tokens": 84,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": []
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "thanks",
+        "type": "chat",
+        "question": "thanks, that was helpful",
+        "expected_route": [
+          "Chat"
+        ]
+      },
+      "results": {
+        "full agent": {
+          "answer": "You’re welcome! 😊",
+          "route": "Chat",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 2.09,
+          "llm_calls": 2,
+          "input_tokens": 415,
+          "output_tokens": 27,
+          "declined": true,
+          "valid_citations": false,
+          "cites_correct_page": false,
+          "keyword_recall": null,
+          "route_ok": true,
+          "pages_found": []
+        }
+      }
+    }
+  ]
+}

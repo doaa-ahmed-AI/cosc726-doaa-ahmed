@@ -1,0 +1,209 @@
+{
+  "comparison": {
+    "full agent": {
+      "in-scope questions answered": "3/3 (100%)",
+      "answers with valid citations": "3/3 (100%)",
+      "answers citing a correct page": "3/3 (100%)",
+      "keyword recall (completeness)": "82%",
+      "out-of-scope honestly declined": "-",
+      "avg seconds per question": 23.5,
+      "avg LLM calls per question": 5.7,
+      "avg tokens per question": 9141.0,
+      "total cost": "set prices in run_eval.py"
+    }
+  },
+  "agent_only": {
+    "routing accuracy (all tasks)": "3/3 (100%)",
+    "quiz in a valid format": "-",
+    "plan paused for human approval": "-",
+    "chat/off-topic kept out of the book": "-",
+    "avg retries (extra searches)": 1.3,
+    "answers rejected by the critic": 0,
+    "answers that failed the checks": 0,
+    "avg seconds per task (all tasks)": 23.5,
+    "total cost (all tasks)": "set prices in run_eval.py"
+  },
+  "problems": [],
+  "rows": [
+    {
+      "task": {
+        "id": "definition",
+        "type": "in_scope",
+        "question": "what is an algorithm",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          31
+        ],
+        "keywords": [
+          "unambiguous",
+          "instructions",
+          "finite"
+        ],
+        "note": "Definition on page 31."
+      },
+      "results": {
+        "full agent": {
+          "answer": "An algorithm is a sequence of unambiguous instructions for solving a problem—obtaining the required output for any legitimate input in a finite amount of time. (Design Analysis of Algorithm.pdf, page 31)\n\nAlgorithms are procedural solutions: they provide specific instructions for getting answers, rather than being the answers themselves. (Design Analysis of Algorithm.pdf, page 37)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 0,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 7.25,
+          "llm_calls": 3,
+          "input_tokens": 2448,
+          "output_tokens": 256,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 1.0,
+          "route_ok": true,
+          "pages_found": [
+            29,
+            30,
+            31,
+            37,
+            427
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "design_steps",
+        "type": "in_scope",
+        "question": "explain the steps of designing algorithms",
+        "expected_route": [
+          "Explain"
+        ],
+        "gold_pages": [
+          9,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43
+        ],
+        "keywords": [
+          "understand",
+          "capabilit",
+          "approximat",
+          "technique",
+          "data structure",
+          "specif",
+          "correct",
+          "analy",
+          "cod"
+        ],
+        "note": "Section 1.2 (pages 37-43) has 9 steps; page 9 is the table of contents that lists them."
+      },
+      "results": {
+        "full agent": {
+          "answer": "The course material describes algorithm design as a sequence of related actions rather than a fixed recipe. The parts covered in the provided material are:\n\n1. **Understand the problem.** Read its description carefully, resolve doubts, work through small examples, and consider special cases before designing a solution. (Design  Analysis of Algorithm.pdf, page 37)\n\n2. **Consider an appropriate design approach.** General algorithm design techniques can guide solutions to new problems, but a technique may not apply, several may need to be combined, and applying one can require ingenuity. (Design  Analysis of Algorithm.pdf, page 39; Design  Analysis of Algorithm.pdf, page 40)\n\n3. **Choose suitable data structures.** Since algorithms operate on data, choose structures appropriate for the operations the algorithm performs; the choice can affect efficiency. (Design  Analysis of Algorithm.pdf, page 40)\n\n4. **Specify the algorithm.** Once designed, express it in a form such as a description in words or pseudocode. (Design  Analysis of Algorithm.pdf, page 40)\n\n5. **Prove correctness.** Show that the algorithm produces the required result for every legitimate input and finishes in a finite amount of time. The material notes that mathematical induction is a common proof technique. (Design  Analysis of Algorithm.pdf, page 41)\n\n6. **Analyze efficiency.** The material identifies analyzing an algorithm’s efficiency as part of algorithmic problem solving, though the provided excerpts do not explain how to carry out this analysis. (Design  Analysis of Algorithm.pdf, page 30)\n\n7. **Code the algorithm.** When implementing it as a program, take care that the transition from algorithm to code is neither incorrect nor inefficient. (Design  Analysis of Algorithm.pdf, page 43)\n\nThese actions can involve repeated effort and revision; a good algorithm is often the result of reworking it. (Design  Analysis of Algorithm.pdf, page 67)",
+          "route": "Explain",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 35.35,
+          "llm_calls": 7,
+          "input_tokens": 10014,
+          "output_tokens": 2944,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 0.7777777777777778,
+          "route_ok": true,
+          "pages_found": [
+            29,
+            30,
+            37,
+            39,
+            40,
+            41,
+            43,
+            66,
+            67,
+            390,
+            416,
+            427,
+            431,
+            437
+          ]
+        }
+      }
+    },
+    {
+      "task": {
+        "id": "design_steps_typos",
+        "type": "in_scope",
+        "question": "summrize the dessigning algorithm procees",
+        "expected_route": [
+          "Summarize"
+        ],
+        "gold_pages": [
+          9,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43
+        ],
+        "keywords": [
+          "understand",
+          "capabilit",
+          "approximat",
+          "technique",
+          "data structure",
+          "specif",
+          "correct",
+          "analy",
+          "cod"
+        ],
+        "note": "Same as design_steps, with spelling mistakes."
+      },
+      "results": {
+        "full agent": {
+          "answer": "The course material describes algorithm design as a sequence of steps, including these points:\n\n1. **Understand the problem.** Read its description carefully, resolve uncertainties, try small examples, and consider special cases. Check whether a known algorithm already solves it; otherwise, design one. (Design Analysis of Algorithm.pdf, page 37)\n\n2. **Specify the algorithm.** Describe the procedure precisely, using natural language or pseudocode. Pseudocode is generally more precise than natural language. (Design Analysis of Algorithm.pdf, page 40)\n\n3. **Prove correctness.** Show that the specified algorithm produces the required result for every legitimate input and terminates in a finite amount of time. (Design Analysis of Algorithm.pdf, page 41)\n\n4. **Analyze efficiency.** The material identifies analyzing an algorithm’s efficiency as one of the main aspects of algorithmic problem solving. (Design Analysis of Algorithm.pdf, page 30)\n\n5. **Implement the algorithm as a program.** The material distinguishes an algorithm’s description from its implementation and notes that converting an algorithm into a program can introduce errors or inefficiency. (Design Analysis of Algorithm.pdf, page 41; Design Analysis of Algorithm.pdf, page 43)\n\nThe material also presents algorithm design techniques as general strategies that can guide the design of algorithms for new problems. (Design Analysis of Algorithm.pdf, page 39)",
+          "route": "Summarize",
+          "paused_for_approval": false,
+          "retries": 2,
+          "failed_checks": 0,
+          "critic_rejections": 0,
+          "quiz_valid": false,
+          "seconds": 27.89,
+          "llm_calls": 7,
+          "input_tokens": 9819,
+          "output_tokens": 1941,
+          "declined": false,
+          "valid_citations": true,
+          "cites_correct_page": true,
+          "keyword_recall": 0.6666666666666666,
+          "route_ok": true,
+          "pages_found": [
+            22,
+            29,
+            30,
+            37,
+            39,
+            40,
+            41,
+            43,
+            66,
+            89,
+            269,
+            427
+          ]
+        }
+      }
+    }
+  ]
+}

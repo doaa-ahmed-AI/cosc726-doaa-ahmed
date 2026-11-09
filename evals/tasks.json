@@ -1,0 +1,72 @@
+[
+  {"id": "definition", "type": "in_scope", "question": "what is an algorithm",
+   "expected_route": ["Explain"], "gold_pages": [31],
+   "keywords": ["unambiguous", "instructions", "finite"],
+   "note": "Definition on page 31."},
+
+  {"id": "design_steps", "type": "in_scope", "question": "explain the steps of designing algorithms",
+   "expected_route": ["Explain"], "gold_pages": [9, 37, 38, 39, 40, 41, 42, 43],
+   "keywords": ["understand", "capabilit", "approximat", "technique", "data structure", "specif", "correct", "analy", "cod"],
+   "note": "Section 1.2 (pages 37-43) has 9 steps; page 9 is the table of contents that lists them."},
+
+  {"id": "design_steps_typos", "type": "in_scope", "question": "summrize the dessigning algorithm procees",
+   "expected_route": ["Summarize"], "gold_pages": [9, 37, 38, 39, 40, 41, 42, 43],
+   "keywords": ["understand", "capabilit", "approximat", "technique", "data structure", "specif", "correct", "analy", "cod"],
+   "note": "Same as design_steps, with spelling mistakes."},
+
+  {"id": "correctness", "type": "in_scope", "question": "why do we need to prove that an algorithm is correct",
+   "expected_route": ["Explain"], "gold_pages": [41],
+   "keywords": ["prov", "input", "finite"],
+   "note": "Proving an Algorithm's Correctness, page 41."},
+
+  {"id": "efficiency", "type": "in_scope", "question": "how do we analyze an algorithm",
+   "expected_route": ["Explain"], "gold_pages": [42],
+   "keywords": ["time", "space", "simplicity", "generality"],
+   "note": "Analyzing an Algorithm, page 42."},
+
+  {"id": "problem_types", "type": "in_scope", "question": "what are the most important problem types",
+   "expected_route": ["Explain"], "gold_pages": [46],
+   "keywords": ["sorting", "searching", "string", "graph", "combinatorial", "geometric", "numerical"],
+   "note": "Section 1.3 lists 7 problem types on page 46."},
+
+  {"id": "design_technique", "type": "in_scope", "question": "what is an algorithm design technique",
+   "expected_route": ["Explain"], "gold_pages": [39, 66],
+   "keywords": ["general", "approach", "problems"],
+   "note": "Definition on page 39; chapter summary on page 66."},
+
+  {"id": "follow_up", "type": "in_scope", "question": "explain that more simply",
+   "history": ["what is an algorithm"],
+   "expected_route": ["Explain"], "gold_pages": [31],
+   "keywords": ["instructions", "problem"],
+   "note": "A follow-up: only understandable with the chat history."},
+
+  {"id": "quiz", "type": "quiz", "question": "make 3 quiz questions about what an algorithm is",
+   "expected_route": ["Quiz"], "gold_pages": [31, 37],
+   "note": "Must be a valid quiz: 4 options per question and passing the checks."},
+
+  {"id": "study_plan", "type": "plan", "question": "make me a 3 day study plan for designing algorithms",
+   "expected_route": ["Plan"],
+   "note": "Must pause for human approval. The evaluation always rejects, so nothing is shared."},
+
+  {"id": "photosynthesis", "type": "out_of_scope", "question": "expain photosythiss",
+   "expected_route": ["Explain", "Chat"],
+   "note": "Not in the book (and misspelled): the honest answer is to decline."},
+
+  {"id": "french_revolution", "type": "out_of_scope", "question": "explain the causes of the french revolution",
+   "expected_route": ["Explain", "Chat"],
+   "note": "Not in the book: the honest answer is to decline."},
+
+  {"id": "capital_of_japan", "type": "out_of_scope", "question": "what is the capital of japan",
+   "expected_route": ["Explain", "Chat"],
+   "note": "General knowledge, not in the book: decline or redirect."},
+
+  {"id": "greeting", "type": "chat", "question": "hi",
+   "expected_route": ["Chat"]},
+
+  {"id": "recipe", "type": "chat", "question": "give me a recipe for banana bread",
+   "expected_route": ["Chat"],
+   "note": "Off-topic: should be politely redirected."},
+
+  {"id": "thanks", "type": "chat", "question": "thanks, that was helpful",
+   "expected_route": ["Chat"]}
+]
