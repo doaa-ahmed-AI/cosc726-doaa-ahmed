@@ -1,7 +1,9 @@
 import uuid
 import streamlit as st
 
-from main import graph
+from src.agent.chat_titles import get_title, list_chats, make_title, save_title  
+from src.agent.graph import graph
+from src.agent.validation import find_cited_pages
 from src.rag.vector_store import add_pdf
 
 
@@ -9,9 +11,18 @@ st.set_page_config(page_title="StudyU AI Assistant", page_icon="📚")
 st.title("AI Study Assistant")
 
 
-if "thread_id" not in st.session_state:
-    st.session_state.thread_id = str(uuid.uuid4())
-    st.session_state.chat = []
+if "thread" not in st.query_params:
+    st.query_params["thread"] = str(uuid.uuid4())
+thread_id = st.query_params["thread"]
+
+
+if st.session_state.get("thread_id") != thread_id:
+    st.session_state.thread_id = thread_id
+    saved = graph.get_state({"configurable": {"thread_id": thread_id}}).values.get("messages", [])
+    st.session_state.chat = [
+        {"role": "user" if m.type == "human" else "assistant", "content": m.content}
+        for m in saved
+    ]
 
 
 def show_details(route, sources, missing=""):
@@ -38,9 +49,17 @@ with st.sidebar:
 
     st.divider()
     if st.button("New chat"):
-        st.session_state.thread_id = str(uuid.uuid4())
-        st.session_state.chat = []
+        st.query_params["thread"] = str(uuid.uuid4())  # a new id in the URL
         st.rerun()
+
+
+
+    st.caption("Your chats")
+    for chat_id, title in list_chats():
+        is_open = chat_id == thread_id
+        if st.button(title, key=f"chat-{chat_id}", type="primary" if is_open else "secondary"):
+            st.query_params["thread"] = chat_id  # open that chat
+            st.rerun()
 
 
 question = st.chat_input("Ask a question about your course material")
@@ -51,8 +70,7 @@ if not st.session_state.chat and not question:
 for msg in st.session_state.chat:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
-        show_details(msg.get("route"), msg.get(
-            "sources"), msg.get("missing", ""))
+        show_details(msg.get("route"), msg.get("sources"), msg.get("missing", ""))
 
 
 if question:
@@ -73,14 +91,30 @@ if question:
         missing = ""
 
         if route != "Chat":
-            sources = [
-                f"{d['source']}, page {d['page']} (distance {d['distance']:.2f})" for d in result["retrieved_docs"]]
+           
+            cited = find_cited_pages(answer)
+            pages = {}
+            for d in result["retrieved_docs"]:
+                pages.setdefault((d["source"], d["page"]), []).append(d["distance"])
+            sources = []
+            for (source, page), distances in sorted(pages.items(), key=lambda item: min(item[1])):
+                used = "used in the answer" if page in cited else "read, not used"
+                sources.append(f"{source}, page {page} · {len(distances)} piece(s) · "
+                               f"best distance {min(distances):.2f} · {used}")
             missing = result.get("missing", "")
             route = (f"{route} · searches: {result.get('retry_count', 0) + 1}"
                      f" · failed checks: {result.get('failed_checks', 0)}"
                      f" · query: {result.get('search_query', '')}")
+
         st.markdown(answer)
         show_details(route, sources, missing)
 
     st.session_state.chat.append(
         {"role": "assistant", "content": answer, "route": route, "sources": sources, "missing": missing})
+
+
+
+    is_new_chat = get_title(thread_id) is None
+    save_title(thread_id, get_title(thread_id) or make_title(question, answer))
+    if is_new_chat:
+        st.rerun() 
