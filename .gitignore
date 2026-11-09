@@ -24,3 +24,5 @@ reports/*
 !reports/.gitkeep
 
 chroma_db
+outbox/
+checkpoints.db*

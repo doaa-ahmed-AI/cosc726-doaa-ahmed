@@ -18,6 +18,7 @@ CLASSIFIER_PROMPT = """You are the router for a study assistant. Classify the us
   (for example "what is X", "how does X work", "explain the steps of X").
 - Summarize: asks to summarize or shorten a topic or content.
 - Quiz: asks for a quiz, practice questions, or to test their knowledge.
+- Plan: asks for a study plan, a study schedule, or how to organize their studying.
 - Chat: ONLY greetings, thanks, small talk, or requests clearly unrelated to studying (like recipes).
 The message may contain spelling mistakes; focus on what the user means.
 If you are unsure between Chat and another category, choose the other category.
@@ -54,4 +55,7 @@ def classify_intent(state: StudyState):
         "quiz": None,
         "problems": [],
         "failed_checks": 0,
+        "plan": None,         
+        "approval": None,     
+        "action_result": "", 
     }

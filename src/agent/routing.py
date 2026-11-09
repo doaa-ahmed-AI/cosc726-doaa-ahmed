@@ -6,6 +6,7 @@ AGENT_FOR_INTENT = {
     "Explain": "explanation agent",
     "Summarize": "summary agent",
     "Quiz": "quiz agent",
+    "Plan": "plan agent",
 }
 
 
@@ -28,5 +29,16 @@ def route_after_validate(state: StudyState) -> str:
     
     if state["missing"] and state["retry_count"] < config.MAX_RETRIES:
         return "rewrite query"
+
+    if state["message_intent"] == "Plan" and state.get("plan") and state["plan"]["sessions"]:
+        return "ask approval"
    
     return "finalize"
+
+
+def route_after_approval(state: StudyState) -> str:
+    """Only an approved (or edited) plan may be shared."""
+    if state["approval"] in ("approve", "edit"):
+        return "share plan"
+    return "finalize"
+

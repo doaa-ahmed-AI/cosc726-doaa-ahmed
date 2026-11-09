@@ -1,5 +1,7 @@
 import uuid
 
+from langgraph.types import Command
+
 from src.agent.graph import graph
 
 if __name__ == "__main__":
@@ -9,6 +11,16 @@ if __name__ == "__main__":
         user_message = input("Enter message: ")
         result = graph.invoke(
             {"messages": [{"role": "user", "content": user_message}]}, config=config)
+
+        while "__interrupt__" in result:
+            request = result["__interrupt__"][0].value
+            print("\n⏸️  APPROVAL NEEDED:", request["description"])
+            print(request["plan"])
+            choice = input("approve / edit / reject? ").strip().lower()
+            plan = input(
+                "Type the EXACT plan text to share: ") if choice == "edit" else request["plan"]
+            result = graph.invoke(
+                Command(resume={"choice": choice, "plan": plan}), config=config)
 
         print(result["messages"][-1].content)
 
